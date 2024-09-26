@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.LandMapper">
+
+
+    <select id="queryList" resultType="com.tencent.wxcloudrun.dto.LandDTO">
+        select * from tb_land where deleted=0
+        <if test="condition.name != null and condition.name !='' ">
+            and name like concat('%',#{condition.name},'%')
+        </if>
+        <if test="condition.status != null and condition.status !='' ">
+            and status = #{condition.status}
+        </if>
+        <if test='condition.statusList != null and condition.statusList.size() > 0'>
+            and status in
+            <foreach collection="condition.statusList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by area desc
+    </select>
+</mapper>

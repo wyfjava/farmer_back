@@ -5,13 +5,49 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
+    #url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
+    #username: ${MYSQL_USERNAME}
+    #password: ${MySQL_PASSWORD}
+    url: jdbc:mysql://sh-cynosdbmysql-grp-hvhxdjks.sql.tencentcdb.com:26862/${MYSQL_DATABASE:springboot_demo}?useUnicode=true&serverTimezone=GMT%2b8&characterEncoding=UTF-8&allowMultiQueries=true&rewriteBatchedStatements=true
+    username: root
+    password: TVpk7gRu
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 600000
+      minimum-idle: 5
+      auto-commit: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 100MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   mvc:
     view:
       suffix: .html
       prefix: /
 
-mybatis:
-  mapper-locations: classpath*:mapper/*Mapper.xml
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    #    配置日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-fetch-size: 100
+    default-statement-timeout: 180
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.tencent.wxcloudrun.model
+  global-config:
+    #主键类型 0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 0
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #字段策略 0:"忽略判断-所有字段都更新和插入",1:"非 NULL 判断-只更新和插入非NULL值"),2:"非空判断-只更新和插入非NULL值且非空字符串"
+    #field-strategy: 1
+    db-config:
+      logic-delete-field: deleted  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
