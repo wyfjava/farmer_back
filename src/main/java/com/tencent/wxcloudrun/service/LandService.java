@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface LandService extends BaseService<LandEntity>{
     PageUtils<LandDTO> queryPage(Map<String, Object> params);
+
+    LandDTO getInfo(Long id);
 }
