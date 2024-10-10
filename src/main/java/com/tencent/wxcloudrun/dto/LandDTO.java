@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -59,6 +60,8 @@ public class LandDTO implements Serializable {
      * 删除状态(0未删除 1已删除)
      */
     private String deleted;
+    @ApiModelProperty(value = "耕地标签")
+    private List<LandTagDTO> landTagList;
 
 
 }

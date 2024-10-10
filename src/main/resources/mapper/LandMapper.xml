@@ -2,21 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.LandMapper">
 
+    <resultMap id="landInfo" type="com.tencent.wxcloudrun.dto.LandDTO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="area" column="area"/>
+        <result property="location" column="location"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="status" column="status"/>
+        <collection property="landTagList" ofType="com.tencent.wxcloudrun.dto.LandTagDTO" column="id=id" select="selectLandTagList">
+            <id property="id" column="id"/>
+            <id property="tagId" column="tag_id"/>
+            <id property="landId" column="land_id"/>
+            <result property="title" column="title"/>
+        </collection>
+    </resultMap>
 
-    <select id="queryList" resultType="com.tencent.wxcloudrun.dto.LandDTO">
-        select * from tb_land where deleted=0
+    <select id="queryList" resultMap="landInfo">
+        select * from tb_land a where a.deleted=0
         <if test="condition.name != null and condition.name !='' ">
-            and name like concat('%',#{condition.name},'%')
+            and a.name like concat('%',#{condition.name},'%')
         </if>
         <if test="condition.status != null and condition.status !='' ">
-            and status = #{condition.status}
+            and a.status = #{condition.status}
         </if>
         <if test='condition.statusList != null and condition.statusList.size() > 0'>
-            and status in
+            and a.status in
             <foreach collection="condition.statusList" item="item" index="index" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
-        order by area desc
+        order by a.create_time asc
+    </select>
+
+    <select id="selectLandTagList" resultType="com.tencent.wxcloudrun.dto.LandTagDTO">
+        select * from tb_land_tag where land_id=#{id} and deleted=0 order by create_time asc
     </select>
 </mapper>
+
+
+
