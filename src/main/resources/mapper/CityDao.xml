@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tencent.wxcloudrun.dao.CityDao">
+
+    <select id="getByAreaCode" resultType="com.tencent.wxcloudrun.model.CityEntity">
+        select * from qx_city WHERE number_code  = #{areaCode}
+    </select>
+    <select id="querySF" resultType="com.tencent.wxcloudrun.model.CityEntity" parameterType="java.lang.String">
+        select * from qx_city WHERE parent_code = 'china' AND number_code = #{areaCode}
+    </select>
+
+    <select id="ddtemp" resultType="java.util.HashMap">
+        select * from qx_city_ddtemp
+    </select>
+
+</mapper>

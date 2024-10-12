@@ -141,4 +141,8 @@ public interface BaseService<T> {
     boolean saveBatch(Collection<T> entityList, int batchSize);
 
     boolean updateBatch(Collection<T> entityList,int batchSize);
+
+    T getByObjectCode(String objectCode);
+
+    int updateByObjectCode(T t, String objectCode);
 }

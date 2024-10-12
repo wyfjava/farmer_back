@@ -310,6 +310,27 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
         }
     }
+    @Override
+    public T getByObjectCode(String objectCode) {
+
+        QueryWrapper<T> qw =  new QueryWrapper<T>();
+        qw.eq("object_code", objectCode);
+        T t = null;
+        try {
+            t = baseMapper.selectOne(qw);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return t;
+    }
+
+    @Override
+    public int updateByObjectCode(T t, String objectCode){
+        QueryWrapper<T> qw =  new QueryWrapper<T>();
+        qw.eq("object_code", objectCode);
+        return baseMapper.update(t,qw);
+    }
 
 }
 

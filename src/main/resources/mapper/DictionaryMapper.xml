@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tencent.wxcloudrun.dao.DictionaryDao">
+
+
+    <select id="queryByParentIdAndSign" resultType="com.tencent.wxcloudrun.model.DictionaryEntity">
+        SELECT
+            t2.*
+        FROM
+            qx_dictionary t1,
+            qx_dictionary t2
+        WHERE
+            t1.object_code = t2.parent_id
+        AND t1.sign = #{parentSign}
+        AND t2.sign = #{subSign}
+        AND t1.deleted = '0'
+        AND t2.deleted = '0'
+
+    </select>
+    <select id="getListBySign" resultType="com.tencent.wxcloudrun.dto.DictionaryBySignDTO">
+        SELECT
+            b.*, t3.`name` AS name2,
+            t3.sign AS sign2,
+            t3.object_code AS objectCode2,
+            t4.`name` AS name3,
+            t4.sign AS sign3,
+            t4.object_code AS objectCode3
+        FROM
+            (
+                SELECT
+                    t2.`name` AS name1,
+                    t2.sign AS sign1,
+                    t2.object_code AS objectCode1,
+                    t2.parent_id
+                FROM
+                    qx_dictionary t1,
+                    qx_dictionary t2
+                WHERE
+                    t1.object_code = t2.parent_id
+                  AND t1.sign = #{sign}
+                  AND t1.deleted = '0'
+                  AND t1.`status` = '0'
+                  AND t2.deleted = '0'
+                  AND t2.`status` = '0'
+            ) b
+                LEFT JOIN qx_dictionary t3 ON t3.parent_id = b.objectCode1
+                AND t3.deleted = '0'
+                AND t3.`status` = '0'
+                LEFT JOIN qx_dictionary t4 ON t4.parent_id = t3.object_code
+                AND t4.deleted = '0'
+                AND t4.`status` = '0'
+        ORDER BY sign1,sign2,sign3 ASC
+    </select>
+
+    <select id="getApiListBySign" resultType="com.tencent.wxcloudrun.dto.DictionaryBySignDTO">
+        SELECT
+            b.*, t3.`name` AS name2,
+            t3.sign AS sign2,
+            t3.object_code AS objectCode2,
+            t4.`name` AS name3,
+            t4.sign AS sign3,
+            t4.object_code AS objectCode3
+        FROM
+            (
+                SELECT
+                    t2.`name` AS name1,
+                    t2.sign AS sign1,
+                    t2.object_code AS objectCode1,
+                    t2.parent_id
+                FROM
+                    qx_dictionary t1,
+                    qx_dictionary t2
+                WHERE
+                    t1.object_code = t2.parent_id
+                  AND t1.sign = #{sign}
+                  AND t2.object_code  IN
+                  <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+                  AND t1.deleted = '0'
+                  AND t1.`status` = '0'
+                  AND t2.deleted = '0'
+                  AND t2.`status` = '0'
+            ) b
+                LEFT JOIN qx_dictionary t3 ON t3.parent_id = b.objectCode1
+                AND t3.deleted = '0'
+                AND t3.`status` = '0'
+                LEFT JOIN qx_dictionary t4 ON t4.parent_id = t3.object_code
+                AND t4.deleted = '0'
+                AND t4.`status` = '0'
+        ORDER BY sign1,sign2,sign3 ASC
+    </select>
+
+</mapper>
