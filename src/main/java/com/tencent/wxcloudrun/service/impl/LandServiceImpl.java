@@ -24,18 +24,18 @@ public class LandServiceImpl extends BaseServiceImpl<LandMapper, LandEntity> imp
     @Override
     public PageUtils<LandDTO> queryPage(Map<String, Object> params) {
         log.info("LandServiceImpl.queryPage.param:{}", JSON.toJSONString(params));
-      Integer pageNum = Constant.pageNum;
-      Integer pageSize = Constant.pageSize;
+        Integer pageNum = Constant.pageNum;
+        Integer pageSize = Constant.pageSize;
         if (params.get("page") != null) {
             pageNum = Integer.parseInt((String) params.get("page"));
         }
         if (params.get("limit") != null) {
             pageSize = Integer.parseInt((String) params.get("limit"));
         }
-      PageHelper.startPage(pageNum, pageSize);
-      List<LandDTO> dtoList = baseMapper.queryList(params);
-      PageInfo<LandDTO> pageInfo = new PageInfo<>(dtoList);
-      return new PageUtils<>(dtoList, (int) pageInfo.getTotal(), pageInfo.getPageSize(), pageInfo.getPageNum());
+        PageHelper.startPage(pageNum, pageSize);
+        List<LandDTO> dtoList = baseMapper.queryList(params);
+        PageInfo<LandDTO> pageInfo = new PageInfo<>(dtoList);
+        return new PageUtils<>(dtoList, (int) pageInfo.getTotal(), pageInfo.getPageSize(), pageInfo.getPageNum());
     }
 
     @Override

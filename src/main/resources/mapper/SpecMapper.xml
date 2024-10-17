@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.SpecMapper">
+
+    <resultMap id="specInfo" type="com.tencent.wxcloudrun.dto.SpecDTO">
+        <id property="id" column="id"/>
+        <result property="specId" column="id"/>
+        <result property="title" column="title"/>
+        <collection property="specValueList" ofType="com.tencent.wxcloudrun.dto.SpecValueDTO">
+            <id property="id" column="bid"/>
+            <result property="specValueId" column="bid"/>
+            <result property="specId" column="bspec_id"/>
+            <result property="specValue" column="spec_value"/>
+        </collection>
+    </resultMap>
+
+    <select id="getSpecListBySpecIdList" resultMap="specInfo">
+        select a.*,b.id as bid,b.spec_id as bspec_id,b.spec_value
+        from tb_spec a left join tb_spec_value b on a.id = b.spec_id and b.deleted=0
+        where a.deleted=0
+        <if test="specIdList != null and specIdList.size() > 0">
+            and a.id in
+            <foreach collection="specIdList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+</mapper>
+
+
+

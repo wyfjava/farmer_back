@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.SkuMapper">
+
+    <resultMap id="skuInfo" type="com.tencent.wxcloudrun.dto.SkuDTO">
+        <id property="id" column="id"/>
+        <result property="skuId" column="id"/>
+        <result property="spuId" column="spu_id"/>
+        <result property="spuName" column="spu_name"/>
+        <result property="skuImageStr" column="sku_image"/>
+        <result property="price" column="price"/>
+        <result property="soldQuantity" column="sold_quantity"/>
+        <result property="stockQuantity" column="stock_quantity"/>
+        <result property="safeStockQuantity" column="safe_stock_quantity"/>
+        <result property="weight" column="weight"/>
+        <collection property="specInfo" ofType="com.tencent.wxcloudrun.dto.SpecValueDTO">
+            <result property="specValueId" column="spec_value_id"/>
+            <result property="specId" column="spec_id"/>
+            <result property="specValue" column="spec_value"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryList" resultType="com.tencent.wxcloudrun.dto.SkuDTO">
+        select * from tb_sku where deleted = 0
+    </select>
+
+    <select id="getSkuListBySpuId" resultMap="skuInfo">
+        select a.id,a.spu_id,a.spu_name,a.sku_image as skuImageStr,a.price,a.sold_quantity,a.stock_quantity,a.safe_stock_quantity,a.weight,
+               b.spec_value_id,c.spec_id,c.spec_value from tb_sku a join
+        tb_sku_spec b on a.id = b.sku_id and b.deleted=0 and a.deleted=0 and a.spu_id = #{spuId}
+        join tb_spec_value c on
+        b.spec_value_id = c.id and c.deleted=0
+    </select>
+</mapper>
+
+
+
