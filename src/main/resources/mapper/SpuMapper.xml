@@ -11,6 +11,11 @@
         </if>
         order by create_time asc
     </select>
+    <select id="spuDetail" resultType="com.tencent.wxcloudrun.dto.SpuDTO">
+        select id,spu_id,spu_category_id,title,primary_image,images as imagesStr,video,spu_tag,
+        min_sale_price,max_line_price,spu_stock_quantity,sold_num,is_put_on_sale,is_sold_out,
+        spec_id,desc_imgs,create_time,update_time from tb_spu where deleted = 0 and spu_id = #{condition.spuId}
+    </select>
 </mapper>
 
 

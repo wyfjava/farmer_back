@@ -13,4 +13,6 @@ import java.util.Map;
 public interface SpuMapper extends BaseMapper<SpuEntity> {
 
     List<SpuDTO> queryList(@Param("condition") Map<String, Object> params);
+
+    SpuDTO spuDetail(@Param("condition") Map<String, Object> params);
 }

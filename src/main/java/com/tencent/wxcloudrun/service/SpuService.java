@@ -10,4 +10,6 @@ import java.util.Map;
 public interface SpuService extends BaseService<SpuEntity>{
 
     PageUtils<SpuDTO> queryPage(Map<String, Object> params);
+
+    SpuDTO spuDetail(Map<String, Object> params);
 }

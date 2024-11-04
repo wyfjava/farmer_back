@@ -63,5 +63,15 @@ public class SkuController {
         return Result.OK(SUCCESS_MSG, page);
     }
 
+    @ApiOperation("SPU详情")
+    @GetMapping("/spuDetail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "spuId", value = "spuId", paramType = "query", required = true, dataType = "String", dataTypeClass = String.class),
+    })
+    public Result<SpuDTO> spuDetail(@RequestParam Map<String, Object> params) {
+        SpuDTO spuDTO = spuService.spuDetail(params);
+        return Result.OK(SUCCESS_MSG, spuDTO);
+    }
+
 
 }

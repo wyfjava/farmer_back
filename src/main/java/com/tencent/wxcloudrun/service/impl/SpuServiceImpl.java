@@ -46,6 +46,21 @@ public class SpuServiceImpl extends BaseServiceImpl<SpuMapper, SpuEntity> implem
         return new PageUtils<>(dtoList, (int) pageInfo.getTotal(), pageInfo.getPageSize(), pageInfo.getPageNum());
     }
 
+    @Override
+    public SpuDTO spuDetail(Map<String, Object> params) {
+        SpuDTO spuDTO = baseMapper.spuDetail(params);
+        if (spuDTO != null) {
+            spuDTO.setDesc(JSON.parseArray(spuDTO.getDescImgs(), String.class));
+            spuDTO.setImages(JSON.parseArray(spuDTO.getImagesStr(), String.class));
+            spuDTO.setSpuTagList(getSpuTagListBySpuTat(spuDTO.getSpuTag()));
+            // 设置specList
+            spuDTO.setSpecList(getSpecListBySpecId(spuDTO.getSpecId()));
+            // 设置skuList
+            spuDTO.setSkuList(getSkuListBySpuId(spuDTO.getId()));
+        }
+        return spuDTO;
+    }
+
     private void setExtraInfo(List<SpuDTO> dtoList) {
         for (SpuDTO spuDTO : dtoList) {
             spuDTO.setDesc(JSON.parseArray(spuDTO.getDescImgs(), String.class));
